@@ -1,16 +1,21 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import React from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// importing all components
-import Username from './components/Username'
-import Reset from './components/Reset'
-import Register from './components/Register'
-import Recovery from './components/Recovery'
-import Profile from './components/Profile'
-import Password from './components/Password'
-import PageNotFound from './components/PageNotFound'
 
-// Router routes
+/** import all components */
+import Username from './components/Username';
+import Password from './components/Password';
+import Register from './components/Register';
+import Profile from './components/Profile';
+import Recovery from './components/Recovery';
+import Reset from './components/Reset';
+import PageNotFound from './components/PageNotFound';
 
+
+/** auth middleware */
+import { AuthorizeUser, ProtectRoute } from './middleware/auth'
+
+/** root routes */
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,11 +27,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/password',
-    element: <Password></Password>
+    element: <ProtectRoute><Password /></ProtectRoute>
   },
   {
     path: '/profile',
-    element: <Profile></Profile>
+    element: <AuthorizeUser><Profile /></AuthorizeUser>
   },
   {
     path: '/recovery',
@@ -37,19 +42,15 @@ const router = createBrowserRouter([
     element: <Reset></Reset>
   },
   {
-    path: '/*',
+    path: '*',
     element: <PageNotFound></PageNotFound>
   },
 ])
 
-function App() {
+export default function App() {
   return (
-    <>
-      <main>
-        <RouterProvider router={router}></RouterProvider>
-      </main>
-    </>
-  );
+    <main>
+      <RouterProvider router={router}></RouterProvider>
+    </main>
+  )
 }
-
-export default App;
